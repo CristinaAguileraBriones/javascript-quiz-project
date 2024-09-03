@@ -41,4 +41,45 @@ class Quiz {
             return true
         }
     }
+
+    filterQuestionsByDifficulty(difficulty) { 
+        if (difficulty >= 1 && difficulty <= 3){ 
+            
+            this.questions = this.questions.filter((question)=>{
+                
+                return question.difficulty === difficulty }) 
+        
+        }
+    }
+    averageDifficulty() {
+
+        
+
+        let suma = this.questions.reduce((acc, eachNumber)=>{
+
+            if(this.questions.difficulty===undefined){
+
+
+                return acc
+            }
+
+
+            return acc + eachNumber.difficulty
+
+        },0)
+
+        let numQuestionsWithDifficulty = this.questions.filter((question) => {
+            return question.difficulty !== undefined.length
+        
+        })
+
+    // Si no hay preguntas con dificultad definida, retornamos null
+    if (numQuestionsWithDifficulty === 0) {
+        return null;
+    }
+
+        
+    }
+
+  
 }

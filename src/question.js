@@ -21,3 +21,4 @@ class Question {
 let obj1 = new Question("Esto es una pregunta", ["A", "B", "C", "D"], "C", 1)
 
 console.log(obj1.shuffleChoices())
+//console.log(obj1.filterQuestionsByDifficulty(1))
