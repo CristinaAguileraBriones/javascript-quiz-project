@@ -51,35 +51,21 @@ class Quiz {
         
         }
     }
+    
     averageDifficulty() {
-
-        
-
-        let suma = this.questions.reduce((acc, eachNumber)=>{
-
-            if(this.questions.difficulty===undefined){
-
-
-                return acc
+        // Filtramos las preguntas que tienen definida la dificultad
+        const questionsWithDifficulty = this.questions.filter((question) => {
+            if(question.difficulty !== undefined) {
+                return true;
             }
+        });
 
+        // Sumamos todas las dificultades y calculamos el promedio
+        const totalDifficulty = questionsWithDifficulty.reduce((sum, question) => {
+            return sum + question.difficulty;
+        }, 0);
 
-            return acc + eachNumber.difficulty
-
-        },0)
-
-        let numQuestionsWithDifficulty = this.questions.filter((question) => {
-            return question.difficulty !== undefined.length
-        
-        })
-
-    // Si no hay preguntas con dificultad definida, retornamos null
-    if (numQuestionsWithDifficulty === 0) {
-        return null;
+        return totalDifficulty / questionsWithDifficulty.length;
     }
 
-        
-    }
-
-  
 }
