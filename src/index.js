@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionContainer = document.querySelector("#question");
   const choiceContainer = document.querySelector("#choices");
   const nextButton = document.querySelector("#nextButton");
+  const restartQuizButton = document.querySelector("#restartButton")
 
   // End view elements
   const resultContainer = document.querySelector("#result");
@@ -175,8 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
             
   }  
   
-
-
   function showResults() {
 
     // YOUR CODE HERE:
@@ -191,4 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
   }
   
+  restartQuizButton.addEventListener("click", () =>{
+    endView.style.display = "none";
+    quizView.style.display = "flex";
+    quiz.currentQuestionIndex = 0
+    quiz.correctAnswers = 0
+    quiz.shuffleQuestions()
+    showQuestion()
+  })
+
 });
