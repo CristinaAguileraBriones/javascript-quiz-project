@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.querySelector("#nextButton");
   const restartQuizButton = document.querySelector("#restartButton")
 
+  let timer;
+
   // End view elements
   const resultContainer = document.querySelector("#result");
 
@@ -27,11 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Array with the quiz questions
   const questions = [
-    new Question("What is 2 + 2?", ["3", "4", "5", "6"], "4", 1),
-    new Question("What is the capital of France?", ["Miami", "Paris", "Oslo", "Rome"], "Paris", 1),
-    new Question("Who created JavaScript?", ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"], "Brendan Eich", 2),
-    new Question("What is the mass–energy equivalence equation?", ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"], "E = mc^2", 3),
-    // Add more questions here
+    new Question("¿Cuál es la causa más común de muerte súbita?", ["Paro cardíaco", "Beber alcohol", "Apuntarte a un Bootcamp de Ironhack :)", "Comer solo McDonald's"], "Apuntarte a un Bootcamp de Ironhack", 1),
+    new Question("Sobre Record Guiness. ¿Cuál es el record de retretes rotos a cabezazos?", ["58", "37", "46", "222"], "46", 1),
+    new Question("¿Cómo se añade un elemento al principio de un array en JavaScript?", [".push()", ".pop()", ".shift()", ".unshift()"], ".unshift()", 2),
+    new Question("¿Cuál es el hueso más pequeño del cuerpo humano?", ["Estribo", "Escafoides", "Uno de los huesos del dedo meñique", "Rótula"], "Estribo", 3),
   ];
   const quizDuration = 120; // 120 seconds (2 minutes)
 
@@ -54,28 +55,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeRemainingContainer = document.getElementById("timeRemaining");
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
+
+  restartTimer();
   // Show first question
   showQuestion();
-
-
-  /************  TIMER  ************/
-
-  let timer;
 
 
   /************  EVENT LISTENERS  ************/
 
   nextButton.addEventListener("click", nextButtonHandler);
 
-
-
   /************  FUNCTIONS  ************/
 
   // showQuestion() - Displays the current question and its choices
   // nextButtonHandler() - Handles the click on the next button
   // showResults() - Displays the end view and the quiz results
-
-
+  function restartTimer() {
+    clearInterval(timer);  // Detenemos el temporizador actual antes de reiniciar
+    quiz.timeRemaining = quizDuration;
+  
+    const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  
+    timer = setInterval(() => {  // Reiniciamos el temporizador
+      quiz.timeRemaining--;
+  
+      const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+      const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+      
+      timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  
+      if (quiz.timeRemaining === 0) {
+        showResults();
+      }
+  
+    }, 1000);
+  }
 
   function showQuestion() {
     // If the quiz has ended, show the results
@@ -177,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }  
   
   function showResults() {
-
+    clearInterval(timer);
     // YOUR CODE HERE:
     //
     // 1. Hide the quiz view (div#quizView)
@@ -190,13 +206,37 @@ document.addEventListener("DOMContentLoaded", () => {
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
   }
   
-  restartQuizButton.addEventListener("click", () =>{
+  restartQuizButton.addEventListener("click", () => {
+    clearInterval(timer);  // Detenemos el temporizador actual antes de reiniciar
     endView.style.display = "none";
     quizView.style.display = "flex";
-    quiz.currentQuestionIndex = 0
-    quiz.correctAnswers = 0
-    quiz.shuffleQuestions()
-    showQuestion()
-  })
+    quiz.currentQuestionIndex = 0;
+    quiz.correctAnswers = 0;
+    quiz.shuffleQuestions();
+    restartTimer();
+    
+    // quiz.timeRemaining = quizDuration;
+  
+    // const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    // const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+    // timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  
+    // timer = setInterval(() => {  // Reiniciamos el temporizador
+    //   quiz.timeRemaining--;
+  
+    //   const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    //   const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+      
+    //   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  
+    //   if (quiz.timeRemaining === 0) {
+    //     showResults();
+    //   }
+  
+    // }, 1000);
+  
+    showQuestion();
+  });
+  
 
 });
